@@ -1,0 +1,26 @@
+﻿
+@inject IJSRuntime js
+
+<div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" @bind="displayButtons">
+    <label class="form-check-label" for="flexSwitchCheckChecked" /> @(displayButtons == true ? "Włączony" : "Wyłączony")
+</div>
+
+<GenericList List="Movies">
+    <ElementTemplate Context="movie">
+        <IndividualMovie Movie="movie" DisplayButton="displayButtons" DeleteMovie="DeleteMovie" />
+    </ElementTemplate>
+</GenericList>
+
+@code {
+    [Parameter] public List<Movie> Movies { get; set; } = new List<Movie>();
+    bool displayButtons = true;
+
+    private async Task DeleteMovie(Movie movie)
+    {
+        await js.MyFunction($"Próba usunięcia {movie.Title} ");
+        var confirmed = await js.Confirm($"Czy jesteś pewien że chcesz usunąć {movie.Title}");
+        if (confirmed)
+            Movies.Remove(movie);
+    }
+}

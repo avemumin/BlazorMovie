@@ -1,0 +1,44 @@
+﻿@typeparam TItem
+
+@if (List == null)
+{
+    if (NullableTemplate is null)
+    {
+        <p> Ooops. Collection is null.</p>
+    }
+    else
+    {
+        @NullableTemplate
+    }
+}
+else if (!List.Any())
+{
+    if (EmptyTemplate is null)
+    {
+        <EmptyCollection />
+    }
+    else
+    {
+        @EmptyTemplate
+    }
+}
+else
+{
+    @foreach (var element in List)
+    {
+        <div class="divself">
+            @ElementTemplate(element)
+        </div>
+        <br/>
+    }
+}
+
+
+
+
+@code {
+    [Parameter] public List<TItem> List { get; set; }
+    [Parameter] public RenderFragment NullableTemplate { get; set; }
+    [Parameter] public RenderFragment EmptyTemplate { get; set; }
+    [Parameter] public RenderFragment<TItem> ElementTemplate { get; set; }
+}

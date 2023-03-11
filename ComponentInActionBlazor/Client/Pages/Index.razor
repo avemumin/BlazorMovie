@@ -1,0 +1,29 @@
+﻿@page "/"
+
+@inject IRepository repo
+
+<PageTitle>Index</PageTitle>
+
+
+<button type="button" class="btn btn-sm btn-primary" @onclick="AddMovie">Add Movie</button>
+
+<div>
+    <h3>Movie</h3>
+    <MoviesList Movies="movies"/>
+</div>
+
+
+@code {
+    private List<Movie> movies = new List<Movie>();
+
+    protected async override Task OnInitializedAsync() 
+    {
+        await Task.Delay(1000);
+        movies = repo.GetMovies();
+    }
+    private void AddMovie()
+    {
+        var index = movies.Count + 1;
+        movies.Add(new Movie() { Id = index, Title = $"Spider-Man: {index}", ReleaseDate = new DateTime(2023, 11, 2) });
+    }
+}
