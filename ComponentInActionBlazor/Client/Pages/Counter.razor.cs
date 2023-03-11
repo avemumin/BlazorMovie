@@ -8,11 +8,19 @@ public partial class Counter
 
     private int currentCount = 0;
     private static int currentCountStatic = 0;
-    private async Task IncrementCount()
+
+    [JSInvokable]
+    public async Task IncrementCount()
     {
         currentCount++;
         currentCountStatic++;
-        await js.InvokeVoidAsync("dotnetStativInvocation");
+        await js.InvokeVoidAsync("dotnetStaticInvocation");
+    }
+
+    public async Task IncrementCountJavaScript()
+    {
+        await js.InvokeVoidAsync("dotnetInstanceInvocation",
+            DotNetObjectReference.Create(this));
     }
 
     [JSInvokable]
