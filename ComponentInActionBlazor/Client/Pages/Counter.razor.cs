@@ -9,9 +9,14 @@ public partial class Counter
     private int currentCount = 0;
     private static int currentCountStatic = 0;
 
+    IJSObjectReference module;
+
     [JSInvokable]
     public async Task IncrementCount()
     {
+        module = await js.InvokeAsync<IJSObjectReference>("import", "./js/Counter.js");
+        await module.InvokeVoidAsync("displayAlert", "hello from allert");
+
         currentCount++;
         currentCountStatic++;
         await js.InvokeVoidAsync("dotnetStaticInvocation");
