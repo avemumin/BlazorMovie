@@ -1,5 +1,4 @@
-﻿
-@inject IJSRuntime js
+﻿@inject IJSRuntime js
 
 <div class="form-check form-switch">
     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" @bind="displayButtons">
@@ -12,15 +11,35 @@
     </ElementTemplate>
 </GenericList>
 
+
+<Confirmation @ref="confirmation" onCancel="onCancel" onConfirm="onConfirm">
+    <div> Do you wish to delete @movieToDeleted.Title ? </div>
+</Confirmation>
+
 @code {
+    Confirmation confirmation;
     [Parameter] public List<Movie> Movies { get; set; } = new List<Movie>();
     bool displayButtons = true;
+    Movie movieToDeleted;
 
+    void onConfirm()
+    {
+        Movies.Remove(movieToDeleted);
+        confirmation.Hide();
+        movieToDeleted = null;
+    }
+    void onCancel()
+    {
+        confirmation.Hide();
+        movieToDeleted = null;
+    }
     private async Task DeleteMovie(Movie movie)
     {
-        await js.MyFunction($"Próba usunięcia {movie.Title} ");
-        var confirmed = await js.Confirm($"Czy jesteś pewien że chcesz usunąć {movie.Title}");
-        if (confirmed)
-            Movies.Remove(movie);
+        movieToDeleted = movie;
+        confirmation.Show();
+        //await js.MyFunction($"Próba usunięcia {movie.Title} ");
+        //var confirmed = await js.Confirm($"Czy jesteś pewien że chcesz usunąć {movie.Title}");
+        //if (confirmed)
+        //    Movies.Remove(movie);
     }
 }
