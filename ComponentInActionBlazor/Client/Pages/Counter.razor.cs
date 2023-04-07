@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using static ComponentInActionBlazor.Client.Shared.MainLayout;
 
 namespace ComponentInActionBlazor.Client.Pages;
 public partial class Counter
 {
     [Inject] IJSRuntime js { get; set; }
+    [CascadingParameter] public AppState AppState { get; set; } 
+     
 
     private int currentCount = 0;
     private static int currentCountStatic = 0;
