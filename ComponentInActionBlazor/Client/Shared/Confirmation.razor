@@ -1,4 +1,4 @@
-﻿@if (DisplayConfirmation)
+﻿@if (_displayConfirmation)
 {
     <div class="modal-backdrop show"></div>
 
@@ -11,7 +11,7 @@
                     <h5 class="modal-title">
                         @Title
                     </h5>
-                    <button @onclick="onCancel" type="button" class="close">
+                    <button @onclick="OnCancel" type="button" class="close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -19,8 +19,8 @@
                     @ChildContent
                 </div>
                 <div class="modal-footer">
-                    <button @onclick="onCancel" type="button" class="btn btn-secondary">Cancel</button>
-                    <button @onclick="onConfirm" type="button" class="btn btn-primary">Ok</button>
+                    <button @onclick="OnCancel" type="button" class="btn btn-secondary">Cancel</button>
+                    <button @onclick="OnConfirm" type="button" class="btn btn-primary">Ok</button>
                 </div>
             </div>
         </div>
@@ -28,13 +28,13 @@
 }
 
 @code {
-    private bool DisplayConfirmation = false;
+    private bool _displayConfirmation = false;
     [Parameter] public string Title { get; set; } = "Confirm";
-    [Parameter] public RenderFragment ChildContent { get; set; }
-    [Parameter] public EventCallback onConfirm { get; set; }
-    [Parameter] public EventCallback onCancel { get; set; }
+    [Parameter] public required RenderFragment ChildContent { get; set; }
+    [Parameter] public EventCallback OnConfirm { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
 
-    public void Show() => DisplayConfirmation = true;
-    public void Hide() => DisplayConfirmation = false;
+    public void Show() => _displayConfirmation = true;
+    public void Hide() => _displayConfirmation = false;
 
 }

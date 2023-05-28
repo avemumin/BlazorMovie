@@ -9,21 +9,21 @@
 
 <div>
     <h1>Movie</h1>
-    <MoviesList Movies="movies"/>
+    <MoviesList Movies="_movies"/>
 </div>
 
 
 @code {
-    private List<Movie> movies = new List<Movie>();
+    private List<Movie> _movies = new List<Movie>();
 
-    protected async override Task OnInitializedAsync() 
+    protected override async Task OnInitializedAsync() 
     {
         await Task.Delay(1000);
-        movies = repo.GetMovies();
+        _movies = repo.GetMovies();
     }
     private void AddMovie()
     {
-        var index = movies.Count + 1;
-        movies.Add(new Movie() { Id = index, Title = $"Spider-Man: {index}", ReleaseDate = new DateTime(2023, 11, 2) });
+        var index = _movies.Count + 1;
+        _movies.Add(new Movie() { Id = index, Title = $"Spider-Man: {index}", ReleaseDate = new DateTime(2023, 11, 2) });
     }
 }
