@@ -1,45 +1,25 @@
 ﻿@inject IJSRuntime js
 
-<div class="form-check form-switch">
-    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" @bind="displayButtons">
-    <label class="form-check-label" for="flexSwitchCheckChecked" /> @(displayButtons == true ? "Włączony" : "Wyłączony")
-</div>
+
 
 <GenericList List="Movies">
     <ElementTemplate Context="movie">
-        <IndividualMovie Movie="movie" DisplayButton="displayButtons" DeleteMovie="DeleteMovie" />
+        <IndividualMovie Movie="movie" DeleteMovie="DeleteMovie" />
     </ElementTemplate>
 </GenericList>
 
 
-<Confirmation @ref="confirmation" OnCancel="onCancel" OnConfirm="onConfirm">
-    <div> Do you wish to delete @movieToDeleted.Title ? </div>
-</Confirmation>
 
 @code {
-    Confirmation confirmation;
-    [Parameter] public List<Movie> Movies { get; set; } = new List<Movie>();
-    bool displayButtons = true;
-    Movie movieToDeleted;
 
-    void onConfirm()
-    {
-        Movies.Remove(movieToDeleted);
-        confirmation.Hide();
-        movieToDeleted = null;
-    }
-    void onCancel()
-    {
-        confirmation.Hide();
-        movieToDeleted = null;
-    }
+    [Parameter] public List<Movie> Movies { get; set; } = new List<Movie>();
+
+
     private async Task DeleteMovie(Movie movie)
     {
-        movieToDeleted = movie;
-        confirmation.Show();
-        //await js.MyFunction($"Próba usunięcia {movie.Title} ");
-        //var confirmed = await js.Confirm($"Czy jesteś pewien że chcesz usunąć {movie.Title}");
-        //if (confirmed)
-        //    Movies.Remove(movie);
+        await js.MyFunction($"Próba usunięcia {movie.Title} ");
+        var confirmed = await js.Confirm($"Czy jesteś pewien że chcesz usunąć {movie.Title}");
+        if (confirmed)
+            Movies.Remove(movie);
     }
 }
