@@ -4,6 +4,6 @@ namespace ComponentInActionBlazor.Client.Helpers;
 
 public interface IRepository
 {
-    List<Movie> GetMovies();
+    Task<List<Movie>> GetMovies();
 }
 

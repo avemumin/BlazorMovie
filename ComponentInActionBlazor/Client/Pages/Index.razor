@@ -1,22 +1,22 @@
 ﻿@page "/"
-
+@page "/index"
 @inject IRepository repo
 
 <PageTitle>Index</PageTitle>
 
 <div>
     <h1>Movie</h1>
-    <MoviesList Movies="_movies"/>
+    <MoviesList Movies="_movies" />
 </div>
 
 
 @code {
     private List<Movie> _movies = new List<Movie>();
 
-    protected override async Task OnInitializedAsync() 
+    protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(1000);
-        _movies = repo.GetMovies();
+        //await Task.Delay(1000);
+        _movies = await repo.GetMovies();
     }
-   
+
 }
