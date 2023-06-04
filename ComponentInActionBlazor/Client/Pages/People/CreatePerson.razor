@@ -2,6 +2,13 @@
 
 <h3>CreatePerson</h3>
 
-@code {
+<PersonForm Person="person" OnValidSubit="Create"/>
 
+@code {
+    Person person = new() ;
+
+    private void Create()
+    {
+        Console.WriteLine("creating person....");
+    }
 }

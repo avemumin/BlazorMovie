@@ -2,16 +2,18 @@
 @inject IRepository Repository
 <h3>MovieFilter</h3>
 
-<div class="form-inline">
+<div class="form-group">
     <div class="form-group mb-2">
         <label for="title" class="sr-only">Title</label>
         <input type="text" class="form-control" id="title" placeholder="Movie Title"
-        @bind-value="title" @bind-value:event="oninput"
-        @onkeypress="@(TitleKeyPress)" @onmousedown="@(MiceButtonPress)" autocomplete="nope"/>
+        @bind-value="_title"
+        @bind-value:event="oninput"
+        @onkeypress="@(TitleKeyPress)"
+        @onmousedown="@(MiceButtonPress)" autocomplete="nope" />
 
     </div>
     <div class="form-group mx-sm-3 mb-2">
-        <select class="form-control" @bind="selectedGenre">
+        <select class="form-control" @bind="_selectedGenre">
             <option value="0">
                 --Select Genre
             </option>
@@ -22,14 +24,14 @@
         </select>
     </div>
     <div class="form-group mx-sm-3 mb-2">
-        <input type="checkbox" class="form-check-input" id="upcomingReleases" @bind="upcomingReleases" />
+        <input type="checkbox" class="form-check-input" id="upcomingReleases" @bind="_upcomingReleases" />
 
         <label class="form-check-label" for="upcomingReleases">
             Upcoming Releases
         </label>
     </div>
     <div class="form-group mx-sm-3 mb-2">
-        <input type="checkbox" class="form-check-input" id="inTheaters" @bind="inTheaters" />
+        <input type="checkbox" class="form-check-input" id="inTheaters" @bind="_inTheaters" />
 
         <label class="form-check-label" for="upcomingReleases">
             In Theaters
@@ -43,46 +45,45 @@
 <MoviesList Movies="Movies"></MoviesList>
 
 @code {
-    string title = string.Empty;
-    string selectedGenre = "0";
+    string _title = string.Empty;
+    string _selectedGenre = "0";
     private List<Genre> Genres = new List<Genre>() { new Genre() { Id = 1, Name = "XXX" }, new Genre() { Id = 2, Name = "XXX2" } };
-    bool upcomingReleases = false;
-    bool inTheaters = false;
+    bool _upcomingReleases = false;
+    bool _inTheaters = false;
 
     private List<Movie> Movies;
 
     protected override async Task OnInitializedAsync()
     {
-    //await Task.Delay(1000);
+        //await Task.Delay(1000);
         Movies = await Repository.GetMovies();
     }
 
-    private void TitleKeyPress(KeyboardEventArgs e)
+    private async Task TitleKeyPress(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
         {
-            SearchForMovies();
+            await SearchForMovies();
         }
-
     }
 
     private async Task Clear()
     {
         Movies = await Repository.GetMovies();
-        title = "";
-        selectedGenre = "0";
-        upcomingReleases = false;
-        inTheaters = false;
+        _title = "";
+        _selectedGenre = "0";
+        _upcomingReleases = false;
+        _inTheaters = false;
     }
 
     private async Task SearchForMovies()
     {
         var mov = await Repository.GetMovies();
-        Movies = mov.Where(x => x.Title.Contains(title)).ToList();
-        Console.WriteLine($"title:{title}");
-        Console.WriteLine($"selectedGenre:{selectedGenre}");
-        Console.WriteLine($"upcomingReleases:{upcomingReleases}");
-        Console.WriteLine($"inTheaters:{inTheaters}");
+        Movies = mov.Where(x => x.Title.Contains(_title)).ToList();
+        Console.WriteLine($"_title:{_title}");
+        Console.WriteLine($"_selectedGenre:{_selectedGenre}");
+        Console.WriteLine($"_upcomingReleases:{_upcomingReleases}");
+        Console.WriteLine($"_inTheaters:{_inTheaters}");
     }
 
     private void MiceButtonPress(MouseEventArgs obj)
