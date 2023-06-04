@@ -2,21 +2,7 @@
 
 <h3>CreateGenre</h3>
 
-<EditForm Model="_genre" OnValidSubmit="Create">
-    <DataAnnotationsValidator />
-    <ValidationSummary></ValidationSummary>
-    <div class="form-group">
-        <label>Name: </label>
-        <div>
-            <InputText class="form-control" @bind-Value="@_genre.Name" autocomplete="nope" />
-            <ValidationMessage For="() => _genre.Name" />
-        </div>
-    </div>
-    <div>
-        <br />
-        <button class="btn btn-success" type="submit">Save Changes</button>
-    </div>
-</EditForm>
+<GenreForm Genre="_genre" OnValidSubit="Create" />
 
 
 @code {
@@ -25,6 +11,7 @@
     private void Create()
     {
 #if DEBUG
+    Console.WriteLine("Createing");
     Console.WriteLine(_genre.Name);
 #endif
     }

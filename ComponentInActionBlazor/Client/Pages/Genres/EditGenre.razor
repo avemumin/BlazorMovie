@@ -1,7 +1,31 @@
 ﻿@page "/genre/edit/{GenreId:int}"
+@inject IRepository Repo
 <h3>EditGenre</h3>
+
+
+@if (genre != null)
+{
+    <GenreForm Genre="genre" OnValidSubit="Edit" />
+}
+
 
 @code {
     [Parameter]
     public int GenreId { get; set; }
+
+    public Genre genre;
+    protected override Task OnInitializedAsync()
+    {
+
+        var getMovieById = Repo.GetById(GenreId);
+        genre = new Genre() { Id = getMovieById.Result.Id, Name = getMovieById.Result.Title };
+        return Task.CompletedTask;
+    }
+
+    private void Edit()
+    {
+        Console.Write("Edit");
+        Console.WriteLine($"ID: {genre.Id}");
+        Console.WriteLine($"Name: {genre.Name}");
+    }
 }

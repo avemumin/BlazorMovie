@@ -1,9 +1,10 @@
 ﻿using ComponentInActionBlazor.Shared.Data;
-
+using System.Linq;
 namespace ComponentInActionBlazor.Client.Helpers;
 
 public class Repository : IRepository
 {
+    
     public async Task<List<Movie>> GetMovies()
     {
         var movies = new List<Movie>();
@@ -32,6 +33,13 @@ public class Repository : IRepository
             });
         }
         return await Task.FromResult(movies);
+    }
+
+    public async Task<Movie> GetById(int id)
+    {
+        var movies = GetMovies();
+        var movie =  movies.Result.First(m => m.Id == id);
+        return await Task.FromResult<Movie>(movie);
     }
 }
 
